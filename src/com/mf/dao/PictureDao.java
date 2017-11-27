@@ -6,10 +6,13 @@ import com.mf.entity.Picture;
 
 public interface PictureDao extends BaseDao<Picture>{
 	
-	//è¿”å›åŒç±»å‹å›¾ç‰‡ç»„
+	//¸ù¾İÀàĞÍËÑË÷·ûºÏÌõ¼şµÄÍ¼Æ¬
+	//According to the type of search qualified pictures
 	List<Picture> SearchPicturesTypeByLike(String type);
-	//é€šè¿‡å…³é”®å­—æ¨¡ç³ŠæŸ¥è¯¢è¿”å›å›¾ç‰‡é›†åˆ
+	//Ä£ºı²éÑ¯·ûºÏÃû³ÆÌõ¼şµÄÍ¼Æ¬×é
+	//Fuzzy query name qualified group of pictures
 	List<Picture> fuzzyQueryPictures(String nameLike);
-	//è¿”å›æ‰€æœ‰å›¾ç‰‡
+	//»ñÈ¡ËùÓĞÍ¼Æ¬
+	//Get all the pictures
 	List<Picture> AllPicture();
 }
