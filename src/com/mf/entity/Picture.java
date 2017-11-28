@@ -9,7 +9,7 @@ package com.mf.entity;
 
 public class Picture {
 
-	private String PiId;
+	private String Id;
 	private String PiTitle;
 	private String PiType;
 	private String PiBulider;
@@ -17,11 +17,11 @@ public class Picture {
 	private String Sketch;
 
 	public String getPiId() {
-		return PiId;
+		return Id;
 	}
 
 	public void setPiId(String piId) {
-		PiId = piId;
+		Id = piId;
 	}
 
 	public String getPiTitle() {
@@ -66,7 +66,7 @@ public class Picture {
 
 	public Picture(String piId, String piTitle, String piType, String piBulider, String piBtime, String sketch) {
 		super();
-		PiId = piId;
+		Id = piId;
 		PiTitle = piTitle;
 		PiType = piType;
 		PiBulider = piBulider;

@@ -7,63 +7,68 @@ package com.mf.entity;
  *
  */
 public class User {
-	private String UserId;
-	private String UserName;
-	private String UserPwd;
-	private String UserEmail;
+	private String Id;
+	private String Name;
+	private String Pwd;
+	private String Email;
 	private String Sex;
-
-	public String getUserId() {
-		return UserId;
+	
+	
+	public User(String id, String name, String pwd, String email, String sex) {
+		super();
+		Id = id;
+		Name = name;
+		Pwd = pwd;
+		Email = email;
+		Sex = sex;
+	}
+	
+	
+	
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public void setUserId(String userId) {
-		UserId = userId;
+	
+
+	@Override
+	public String toString() {
+		return "User [Id=" + Id + ", Name=" + Name + ", Pwd=" + Pwd + ", Email=" + Email + ", Sex=" + Sex + "]";
 	}
 
-	public String getUserName() {
-		return UserName;
-	}
 
-	public void setUserName(String userName) {
-		UserName = userName;
-	}
 
-	public String getUserPwd() {
-		return UserPwd;
+	public String getId() {
+		return Id;
 	}
-
-	public void setUserPwd(String userPwd) {
-		UserPwd = userPwd;
+	public void setId(String id) {
+		Id = id;
 	}
-
-	public String getUserEmail() {
-		return UserEmail;
+	public String getName() {
+		return Name;
 	}
-
-	public void setUserEmail(String userEmail) {
-		UserEmail = userEmail;
+	public void setName(String name) {
+		Name = name;
 	}
-
+	public String getPwd() {
+		return Pwd;
+	}
+	public void setPwd(String pwd) {
+		Pwd = pwd;
+	}
+	public String getEmail() {
+		return Email;
+	}
+	public void setEmail(String email) {
+		Email = email;
+	}
 	public String getSex() {
 		return Sex;
 	}
-
 	public void setSex(String sex) {
 		Sex = sex;
 	}
 
-	public User(String userId, String userName, String userPwd, String userEmail, String sex) {
-		super();
-		UserId = userId;
-		UserName = userName;
-		UserPwd = userPwd;
-		UserEmail = userEmail;
-		Sex = sex;
-	}
-
-	public User() {
-		super();
-	}
 
 }

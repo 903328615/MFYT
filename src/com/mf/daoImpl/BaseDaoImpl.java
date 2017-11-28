@@ -59,6 +59,7 @@ public class BaseDaoImpl<T> implements BaseDao<T>{
 	            statement = JdbcDaoHelper.getPreparedStatement(sql);  //实例化PreparedStatement.
 	            //为sql语句赋值.
 	            statement = JdbcDaoHelper.setPreparedStatementParam(statement,argType);
+	            System.out.println(sql);
 	            statement.executeUpdate(); //执行语句.
 	        } catch (Exception e) {
 	        
@@ -75,20 +76,65 @@ public class BaseDaoImpl<T> implements BaseDao<T>{
 		
 		sql=this.getSql(SQL_DELETE);
 		
+		try {
+			argType=this.setArgs(t,	SQL_DELETE);
+			statement = JdbcDaoHelper.getPreparedStatement(sql);
+			statement=JdbcDaoHelper.setPreparedStatementParam(statement, argType);
+			
+			statement.executeUpdate();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JdbcDaoHelper.release(statement, null);
+		}
 
 		
 	}
 
 	@Override
 	public void update(T t) {
-		// TODO Auto-generated method stub
-		
+	       sql = this.getSql(SQL_UPDATE);
+	        try {
+	            argType = setArgs(t, SQL_UPDATE);
+	            statement = JdbcDaoHelper.getPreparedStatement(sql);
+	            statement = JdbcDaoHelper.setPreparedStatementParam(statement,
+	                    argType);
+	            statement.executeUpdate();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            JdbcDaoHelper.release(statement, null);
+	        }
 	}
 
 	@Override
 	public T select(T t) {
-		// TODO Auto-generated method stub
-		return null;
+		sql=this.getSql(SQL_SELECT);
+		T obj=null;
+		
+		try {
+			argType=this.setArgs(t, sql);
+			statement=JdbcDaoHelper.getPreparedStatement(sql);
+			statement=JdbcDaoHelper.setPreparedStatementParam(statement, argType);
+			resultSet=statement.executeQuery();
+			Field[] fields =EntityClass.getDeclaredFields();
+			while (resultSet.next()) {
+				obj=EntityClass.newInstance();//相当于new一个T类型实例
+				for (int i = 0; i < fields.length; i++) {
+					fields[i].setAccessible(true);
+					fields[i].set(obj, resultSet.getObject(fields[i].getName()));
+					//属性一一赋值
+				}
+				
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return obj;
 	}
 	
 	/**
@@ -103,20 +149,20 @@ public class BaseDaoImpl<T> implements BaseDao<T>{
 		
 		//插入操作
 		if (operator.equals(SQL_INSERT)) {
-			sqlBuffer.append("inster into "+EntityClass.getSimpleName());
+			sqlBuffer.append("insert into "+EntityClass.getSimpleName());
 			sqlBuffer.append("(");
 			for (int  i = 0;fields!=null&&i < fields.length;  i++) {
 				fields[i].setAccessible(true);//设置访问权限
 				String column =fields[i].getName();
 				sqlBuffer.append(column).append(",");
 			}
-			sqlBuffer=sqlBuffer.deleteCharAt(sql.length()-1);
+			sqlBuffer=sqlBuffer.deleteCharAt(sqlBuffer.length()-1);
 			sqlBuffer.append(")values(");
 			for (int i = 0;fields!=null&& i < fields.length; i++) {
 				sqlBuffer.append("?,");
 			}
 
-			sqlBuffer.deleteCharAt(sql.length()-1);
+			sqlBuffer.deleteCharAt(sqlBuffer.length()-1);
 			sqlBuffer.append(")");//注意是否需要添加分号
 		}else if (operator.equals(SQL_UPDATE)) {
 			
@@ -130,7 +176,7 @@ public class BaseDaoImpl<T> implements BaseDao<T>{
 				sqlBuffer.append(column).append("=").append("?,");
 			}
 		
-			sqlBuffer.deleteCharAt(sql.length()-1);
+			sqlBuffer.deleteCharAt(sqlBuffer.length()-1);
 			
 			sqlBuffer.append(" where id=?");
 		}else if (operator.equals(SQL_DELETE)) {
